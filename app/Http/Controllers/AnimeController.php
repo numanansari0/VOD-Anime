@@ -14,13 +14,24 @@ class AnimeController extends Controller
      */
     public function show($slug)
     {
+        // Attempt to find the anime by slug
         $anime = Anime::where('slug', $slug)->first();
 
+        // If the anime is not found, return a 404 error
         if (!$anime) {
-            return response()->json(['error' => 'Anime not found'], 404);
+            return response()->json([
+                'error' => 'Anime not found',
+            ], 404);
         }
 
-        return response()->json($anime);
+        // If found, return the anime details
+        return response()->json([
+            'title' => $anime->title,
+            'synopsis' => $anime->synopsis,
+            'image_url' => $anime->image_url,
+            'slug' => $anime->slug,
+            'mal_id' => $anime->mal_id,
+        ], 200);
     }
 
 }
